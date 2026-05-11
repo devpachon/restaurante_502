@@ -2,6 +2,7 @@ from django import forms
 from .models import Cliente
 from .models import Empleado
 from .models import Mesa
+from .models import Plato
 
 
 class ClienteForm(forms.ModelForm):
@@ -89,6 +90,45 @@ class MesaForm(forms.ModelForm):
 
             'estado_mesa': forms.Select(attrs={
                 'class': 'form-control'
+            }),
+
+        }
+
+class PlatoForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Plato
+
+        fields = [
+            'nombre_plato',
+            'descripcion',
+            'precio',
+            'categoria',
+            'disponible'
+        ]
+
+        widgets = {
+
+            'nombre_plato': forms.TextInput(attrs={
+                'class': 'form-control'
+            }),
+
+            'descripcion': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3
+            }),
+
+            'precio': forms.NumberInput(attrs={
+                'class': 'form-control'
+            }),
+
+            'categoria': forms.TextInput(attrs={
+                'class': 'form-control'
+            }),
+
+            'disponible': forms.CheckboxInput(attrs={
+                'class': 'form-check-input'
             }),
 
         }

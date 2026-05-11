@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from .forms import ClienteForm
 from .forms import EmpleadoForm
 from .forms import MesaForm
+from .forms import PlatoForm
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
@@ -270,6 +271,80 @@ def lista_platos(request):
 
     platos = Plato.objects.all()
     return render(request, 'gestion/platos.html', {'platos': platos})
+
+@login_required
+def crear_plato(request):
+
+    if request.method == 'POST':
+
+        form = PlatoForm(request.POST)
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('lista_platos')
+
+    else:
+
+        form = PlatoForm()
+
+    return render(
+        request,
+        'gestion/form_plato.html',
+        {
+            'form': form,
+            'titulo': 'Crear Plato'
+        }
+    )
+
+@login_required
+def editar_plato(request, id):
+
+    plato = get_object_or_404(
+        Plato,
+        id=id
+    )
+
+    if request.method == 'POST':
+
+        form = PlatoForm(
+            request.POST,
+            instance=plato
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('lista_platos')
+
+    else:
+
+        form = PlatoForm(
+            instance=plato
+        )
+
+    return render(
+        request,
+        'gestion/form_plato.html',
+        {
+            'form': form,
+            'titulo': 'Editar Plato'
+        }
+    )
+
+@login_required
+def eliminar_plato(request, id):
+
+    plato = get_object_or_404(
+        Plato,
+        id=id
+    )
+
+    plato.delete()
+
+    return redirect('lista_platos')
 
 @login_required
 def lista_ordenes(request):
