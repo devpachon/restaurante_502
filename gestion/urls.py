@@ -12,4 +12,7 @@ urlpatterns = [
     path('facturas/', views.lista_facturas, name='lista_facturas'),
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
+    path('clientes/crear/', views.crear_cliente, name='crear_cliente'),
+    path('clientes/editar/<int:id>/', views.editar_cliente, name='editar_cliente'),
+    path('clientes/eliminar/<int:id>/', views.eliminar_cliente, name='eliminar_cliente'),
 ]

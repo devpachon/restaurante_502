@@ -5,6 +5,9 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.shortcuts import render, redirect
 
+from .forms import ClienteForm
+from django.shortcuts import get_object_or_404
+
 # Create your views here.
 from .models import Cliente, Empleado, Mesa, Plato, Orden, Factura
 
@@ -25,6 +28,80 @@ def lista_clientes(request):
 
     clientes = Cliente.objects.all()
     return render(request, 'gestion/clientes.html', {'clientes': clientes})
+
+@login_required
+def crear_cliente(request):
+
+    if request.method == 'POST':
+
+        form = ClienteForm(request.POST)
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('lista_clientes')
+
+    else:
+
+        form = ClienteForm()
+
+    return render(
+        request,
+        'gestion/form_cliente.html',
+        {
+            'form': form,
+            'titulo': 'Crear Cliente'
+        }
+    )
+
+@login_required
+def editar_cliente(request, id):
+
+    cliente = get_object_or_404(
+        Cliente,
+        id=id
+    )
+
+    if request.method == 'POST':
+
+        form = ClienteForm(
+            request.POST,
+            instance=cliente
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('lista_clientes')
+
+    else:
+
+        form = ClienteForm(
+            instance=cliente
+        )
+
+    return render(
+        request,
+        'gestion/form_cliente.html',
+        {
+            'form': form,
+            'titulo': 'Editar Cliente'
+        }
+    )
+
+@login_required
+def eliminar_cliente(request, id):
+
+    cliente = get_object_or_404(
+        Cliente,
+        id=id
+    )
+
+    cliente.delete()
+
+    return redirect('lista_clientes')
 
 @login_required
 def lista_empleados(request):
