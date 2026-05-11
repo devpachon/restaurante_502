@@ -18,4 +18,7 @@ urlpatterns = [
     path('empleados/crear/', views.crear_empleado, name='crear_empleado'),
     path('empleados/editar/<int:id>/', views.editar_empleado, name='editar_empleado'),
     path('empleados/eliminar/<int:id>/', views.eliminar_empleado, name='eliminar_empleado'),
+    path('mesas/crear/', views.crear_mesa, name='crear_mesa'),
+    path('mesas/editar/<int:id>/', views.editar_mesa, name='editar_mesa'),
+    path('mesas/eliminar/<int:id>/', views.eliminar_mesa, name='eliminar_mesa'),
 ]

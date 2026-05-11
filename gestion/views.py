@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 
 from .forms import ClienteForm
 from .forms import EmpleadoForm
+from .forms import MesaForm
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
@@ -189,6 +190,80 @@ def lista_mesas(request):
 
     mesas = Mesa.objects.all()
     return render(request, 'gestion/mesas.html', {'mesas': mesas})
+
+@login_required
+def crear_mesa(request):
+
+    if request.method == 'POST':
+
+        form = MesaForm(request.POST)
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('lista_mesas')
+
+    else:
+
+        form = MesaForm()
+
+    return render(
+        request,
+        'gestion/form_mesa.html',
+        {
+            'form': form,
+            'titulo': 'Crear Mesa'
+        }
+    )
+
+@login_required
+def editar_mesa(request, id):
+
+    mesa = get_object_or_404(
+        Mesa,
+        id=id
+    )
+
+    if request.method == 'POST':
+
+        form = MesaForm(
+            request.POST,
+            instance=mesa
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('lista_mesas')
+
+    else:
+
+        form = MesaForm(
+            instance=mesa
+        )
+
+    return render(
+        request,
+        'gestion/form_mesa.html',
+        {
+            'form': form,
+            'titulo': 'Editar Mesa'
+        }
+    )
+
+@login_required
+def eliminar_mesa(request, id):
+
+    mesa = get_object_or_404(
+        Mesa,
+        id=id
+    )
+
+    mesa.delete()
+
+    return redirect('lista_mesas')
 
 @login_required
 def lista_platos(request):
