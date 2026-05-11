@@ -6,6 +6,7 @@ from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from .forms import ClienteForm
+from .forms import EmpleadoForm
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
@@ -108,6 +109,80 @@ def lista_empleados(request):
 
     empleados = Empleado.objects.all()
     return render(request, 'gestion/empleados.html', {'empleados': empleados})
+
+@login_required
+def crear_empleado(request):
+
+    if request.method == 'POST':
+
+        form = EmpleadoForm(request.POST)
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('lista_empleados')
+
+    else:
+
+        form = EmpleadoForm()
+
+    return render(
+        request,
+        'gestion/form_empleado.html',
+        {
+            'form': form,
+            'titulo': 'Crear Empleado'
+        }
+    )
+
+@login_required
+def editar_empleado(request, id):
+
+    empleado = get_object_or_404(
+        Empleado,
+        id=id
+    )
+
+    if request.method == 'POST':
+
+        form = EmpleadoForm(
+            request.POST,
+            instance=empleado
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('lista_empleados')
+
+    else:
+
+        form = EmpleadoForm(
+            instance=empleado
+        )
+
+    return render(
+        request,
+        'gestion/form_empleado.html',
+        {
+            'form': form,
+            'titulo': 'Editar Empleado'
+        }
+    )
+
+@login_required
+def eliminar_empleado(request, id):
+
+    empleado = get_object_or_404(
+        Empleado,
+        id=id
+    )
+
+    empleado.delete()
+
+    return redirect('lista_empleados')
 
 @login_required
 def lista_mesas(request):
