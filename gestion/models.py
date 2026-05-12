@@ -1,6 +1,6 @@
 from decimal import Decimal
 from django.db import models
-
+from django.core.validators import MinValueValidator
 
 class Cliente(models.Model):
     nombre = models.CharField(max_length=100)
@@ -93,9 +93,9 @@ class Orden(models.Model):
 class DetalleOrden(models.Model):
     orden = models.ForeignKey(Orden, on_delete=models.CASCADE, related_name='detalles')
     plato = models.ForeignKey(Plato, on_delete=models.CASCADE)
-    cantidad = models.PositiveIntegerField()
-    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
-    subtotal = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    cantidad = models.PositiveIntegerField(validators=[MinValueValidator(1)])
+    precio_unitario = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     class Meta:
         db_table = 'Detalle_Orden'
@@ -105,7 +105,7 @@ class DetalleOrden(models.Model):
         self.subtotal = Decimal(self.cantidad) * self.precio_unitario
         super().save(*args, **kwargs)
 
-        total_orden = sum((detalle.subtotal or Decimal('0.00')) for detalle in self.orden.detalles.all())
+        total_orden = sum(detalle.subtotal for detalle in self.orden.detalles.all())
         self.orden.total = total_orden
         self.orden.save()
 

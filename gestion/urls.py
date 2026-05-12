@@ -24,4 +24,10 @@ urlpatterns = [
     path('platos/crear/', views.crear_plato, name='crear_plato'),
     path('platos/editar/<int:id>/', views.editar_plato, name='editar_plato'),
     path('platos/eliminar/<int:id>/', views.eliminar_plato, name='eliminar_plato'),
+    path('ordenes/crear/', views.crear_orden, name='crear_orden'),
+    path('ordenes/<int:orden_id>/detalle/', views.agregar_detalle, name='agregar_detalle'),
+    path('detalle/editar/<int:detalle_id>/', views.editar_detalle, name='editar_detalle'),
+    path('detalle/eliminar/<int:detalle_id>/', views.eliminar_detalle, name='eliminar_detalle'),
+    path('ordenes/editar/<int:id>/', views.editar_orden, name='editar_orden'),
+    path('ordenes/eliminar/<int:id>/', views.eliminar_orden, name='eliminar_orden'),
 ]

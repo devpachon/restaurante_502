@@ -1,0 +1,84 @@
+{% extends 'gestion/base.html' %}
+
+{% block content %}
+
+<h2>
+
+    Orden #{{ orden.id }}
+
+</h2>
+
+<h3>
+
+    Total: ${{ orden.total }}
+
+</h3>
+
+<hr>
+
+<form method="POST">
+
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <button type="submit">
+
+        Agregar Plato
+
+    </button>
+
+</form>
+
+<hr>
+
+<h3>Detalle</h3>
+
+<table>
+
+    <tr>
+        <th>Plato</th>
+        <th>Cantidad</th>
+        <th>Precio</th>
+        <th>Subtotal</th>
+        <th>Acciones</th>
+    </tr>
+
+    {% for detalle in detalles %}
+
+    <tr>
+
+        <td>
+            {{ detalle.plato.nombre_plato }}
+        </td>
+
+        <td>
+            {{ detalle.cantidad }}
+        </td>
+
+        <td>
+            {{ detalle.precio_unitario }}
+        </td>
+
+        <td>
+            {{ detalle.subtotal }}
+        </td>
+        <td>
+
+    <a href="{% url 'editar_detalle' detalle.id %}">
+        Editar
+    </a>
+
+    <a href="{% url 'eliminar_detalle' detalle.id %}">
+        Eliminar
+    </a>
+
+</td>
+
+    </tr>
+
+    {% endfor %}
+
+</table>
+
+{% endblock %}

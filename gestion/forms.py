@@ -3,6 +3,7 @@ from .models import Cliente
 from .models import Empleado
 from .models import Mesa
 from .models import Plato
+from .models import Orden, DetalleOrden
 
 
 class ClienteForm(forms.ModelForm):
@@ -129,6 +130,62 @@ class PlatoForm(forms.ModelForm):
 
             'disponible': forms.CheckboxInput(attrs={
                 'class': 'form-check-input'
+            }),
+
+        }
+
+class OrdenForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Orden
+
+        fields = [
+            'cliente',
+            'empleado',
+            'mesa',
+            'estado_orden'
+        ]
+
+        widgets = {
+
+            'cliente': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+
+            'empleado': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+
+            'mesa': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+
+            'estado_orden': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+
+        }
+
+class DetalleOrdenForm(forms.ModelForm):
+
+    class Meta:
+
+        model = DetalleOrden
+
+        fields = [
+            'plato',
+            'cantidad'
+        ]
+
+        widgets = {
+
+            'plato': forms.Select(attrs={
+                'class': 'form-control'
+            }),
+
+            'cantidad': forms.NumberInput(attrs={
+                'class': 'form-control'
             }),
 
         }
