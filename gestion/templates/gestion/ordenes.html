@@ -37,6 +37,11 @@
             <a href="{% url 'eliminar_orden' orden.id %}">
                 Eliminar
             </a>
+            {% if orden.estado_orden != 'Facturada' %}
+            <a href="{% url 'generar_factura' orden.id %}">
+                Facturar
+            </a>
+            {% endif %}
         </td>
     </tr>
     {% endfor %}

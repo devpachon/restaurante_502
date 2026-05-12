@@ -30,4 +30,5 @@ urlpatterns = [
     path('detalle/eliminar/<int:detalle_id>/', views.eliminar_detalle, name='eliminar_detalle'),
     path('ordenes/editar/<int:id>/', views.editar_orden, name='editar_orden'),
     path('ordenes/eliminar/<int:id>/', views.eliminar_orden, name='eliminar_orden'),
+    path('facturas/generar/<int:orden_id>/', views.generar_factura, name='generar_factura'),
 ]

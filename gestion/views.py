@@ -9,11 +9,13 @@ from .forms import ClienteForm
 from .forms import EmpleadoForm
 from .forms import MesaForm
 from .forms import PlatoForm
-from .forms import OrdenForm, DetalleOrdenForm
+from .forms import OrdenForm, DetalleOrdenForm, FacturaForm
 from django.shortcuts import get_object_or_404
 
 # Create your views here.
 from .models import Cliente, Empleado, Mesa, Plato, Orden, Factura, DetalleOrden
+
+from decimal import Decimal
 
 @login_required
 def inicio(request):
@@ -545,6 +547,58 @@ def lista_facturas(request):
 
     facturas = Factura.objects.all()
     return render(request, 'gestion/facturas.html', {'facturas': facturas})
+
+@login_required
+def generar_factura(request, orden_id):
+
+    orden = get_object_or_404(
+        Orden,
+        id=orden_id
+    )
+
+    if hasattr(orden, 'factura'):
+
+        return redirect('lista_facturas')
+
+    if request.method == 'POST':
+
+        form = FacturaForm(request.POST)
+
+        if form.is_valid():
+
+            factura = form.save(commit=False)
+
+            subtotal = orden.total
+
+            impuesto = subtotal * Decimal('0.19')
+
+            total_factura = subtotal + impuesto
+
+            factura.orden = orden
+            factura.subtotal = subtotal
+            factura.impuesto = impuesto
+            factura.total_factura = total_factura
+
+            factura.save()
+
+            orden.estado_orden = 'Facturada'
+
+            orden.save()
+
+            return redirect('lista_facturas')
+
+    else:
+
+        form = FacturaForm()
+
+    return render(
+        request,
+        'gestion/form_factura.html',
+        {
+            'form': form,
+            'orden': orden
+        }
+    )
 
 def login_view(request):
 

@@ -4,6 +4,7 @@ from .models import Empleado
 from .models import Mesa
 from .models import Plato
 from .models import Orden, DetalleOrden
+from .models import Factura
 
 
 class ClienteForm(forms.ModelForm):
@@ -185,6 +186,24 @@ class DetalleOrdenForm(forms.ModelForm):
             }),
 
             'cantidad': forms.NumberInput(attrs={
+                'class': 'form-control'
+            }),
+
+        }
+
+class FacturaForm(forms.ModelForm):
+
+    class Meta:
+
+        model = Factura
+
+        fields = [
+            'metodo_pago'
+        ]
+
+        widgets = {
+
+            'metodo_pago': forms.Select(attrs={
                 'class': 'form-control'
             }),
 
