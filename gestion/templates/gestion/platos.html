@@ -27,7 +27,8 @@
             <a href="{% url 'editar_plato' plato.id %}">
                 Editar
             </a>
-            <a href="{% url 'eliminar_plato' plato.id %}">
+            <a href="{% url 'eliminar_plato' plato.id %}"
+                onclick="return confirm('¿Desea eliminar este plato?')">
                 Eliminar
             </a>
         </td>

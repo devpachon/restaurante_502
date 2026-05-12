@@ -23,7 +23,8 @@
             <a href="{% url 'editar_mesa' mesa.id %}">
                 Editar
             </a>
-            <a href="{% url 'eliminar_mesa' mesa.id %}">
+            <a href="{% url 'eliminar_mesa' mesa.id %}"
+                onclick="return confirm('¿Desea eliminar esta mesa?')">
                 Eliminar
             </a>
         </td>

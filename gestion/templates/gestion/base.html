@@ -23,6 +23,20 @@
         <a href="{% url 'logout' %}">Cerrar sesión</a>
     </nav>
 
+    {% if messages %}
+
+        {% for message in messages %}
+
+            <div class="mensaje">
+
+                {{ message }}
+
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
     <div class="contenedor">
         {% block content %}
         {% endblock %}

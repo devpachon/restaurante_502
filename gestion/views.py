@@ -45,7 +45,7 @@ def crear_cliente(request):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Cliente creado correctamente')
             return redirect('lista_clientes')
 
     else:
@@ -79,7 +79,7 @@ def editar_cliente(request, id):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Cliente actualizado correctamente')
             return redirect('lista_clientes')
 
     else:
@@ -106,7 +106,7 @@ def eliminar_cliente(request, id):
     )
 
     cliente.delete()
-
+    messages.success(request, 'Cliente eliminado correctamente')
     return redirect('lista_clientes')
 
 @login_required
@@ -125,7 +125,7 @@ def crear_empleado(request):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Empleado creado correctamente')
             return redirect('lista_empleados')
 
     else:
@@ -159,7 +159,7 @@ def editar_empleado(request, id):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Empleado actualizado correctamente')
             return redirect('lista_empleados')
 
     else:
@@ -186,7 +186,7 @@ def eliminar_empleado(request, id):
     )
 
     empleado.delete()
-
+    messages.success(request, 'Empleado eliminado correctamente')
     return redirect('lista_empleados')
 
 @login_required
@@ -205,7 +205,7 @@ def crear_mesa(request):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Mesa creada correctamente')
             return redirect('lista_mesas')
 
     else:
@@ -239,7 +239,7 @@ def editar_mesa(request, id):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Mesa actualziada correctamente')
             return redirect('lista_mesas')
 
     else:
@@ -266,7 +266,7 @@ def eliminar_mesa(request, id):
     )
 
     mesa.delete()
-
+    messages.success(request, 'Mesa eliminada correctamente')
     return redirect('lista_mesas')
 
 @login_required
@@ -285,7 +285,7 @@ def crear_plato(request):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Plato creado correctamente')
             return redirect('lista_platos')
 
     else:
@@ -319,7 +319,7 @@ def editar_plato(request, id):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Plato actualizado correctamente')
             return redirect('lista_platos')
 
     else:
@@ -346,7 +346,7 @@ def eliminar_plato(request, id):
     )
 
     plato.delete()
-
+    messages.success(request, 'Plato eliminado correctamente')
     return redirect('lista_platos')
 
 @login_required
@@ -365,7 +365,7 @@ def crear_orden(request):
         if form.is_valid():
 
             orden = form.save()
-
+            messages.success(request, 'Orden creada correctamente')
             return redirect(
                 'agregar_detalle',
                 orden.id
@@ -392,6 +392,10 @@ def agregar_detalle(request, orden_id):
         id=orden_id
     )
 
+    if orden.estado_orden == 'Facturada':
+
+        return redirect('lista_ordenes')
+
     if request.method == 'POST':
 
         form = DetalleOrdenForm(
@@ -407,7 +411,7 @@ def agregar_detalle(request, orden_id):
             detalle.orden = orden
 
             detalle.save()
-
+            messages.success(request, 'Detalle agregado correctamente')
             return redirect(
                 'agregar_detalle',
                 orden.id
@@ -437,6 +441,10 @@ def editar_detalle(request, detalle_id):
         id=detalle_id
     )
 
+    if detalle.orden.estado_orden == 'Facturada':
+
+        return redirect('lista_ordenes')
+
     if request.method == 'POST':
 
         form = DetalleOrdenForm(
@@ -447,7 +455,7 @@ def editar_detalle(request, detalle_id):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Detalle actualizado correctamente')
             return redirect(
                 'agregar_detalle',
                 detalle.orden.id
@@ -476,6 +484,10 @@ def eliminar_detalle(request, detalle_id):
         id=detalle_id
     )
 
+    if detalle.orden.estado_orden == 'Facturada':
+
+        return redirect('lista_ordenes')
+
     orden = detalle.orden
 
     detalle.delete()
@@ -488,7 +500,7 @@ def eliminar_detalle(request, detalle_id):
     orden.total = total_orden
 
     orden.save()
-
+    messages.success(request, 'Detalle eliminado correctamente')
     return redirect(
         'agregar_detalle',
         orden.id
@@ -502,6 +514,10 @@ def editar_orden(request, id):
         id=id
     )
 
+    if orden.estado_orden == 'Facturada':
+
+        return redirect('lista_ordenes')
+
     if request.method == 'POST':
 
         form = OrdenForm(
@@ -512,7 +528,7 @@ def editar_orden(request, id):
         if form.is_valid():
 
             form.save()
-
+            messages.success(request, 'Orden actualizada correctamente')
             return redirect('lista_ordenes')
 
     else:
@@ -537,6 +553,10 @@ def eliminar_orden(request, id):
         Orden,
         id=id
     )
+
+    if orden.estado_orden == 'Facturada':
+        messages.success(request, 'Orden eliminada correctamente')
+        return redirect('lista_ordenes')
 
     orden.delete()
 
@@ -584,7 +604,7 @@ def generar_factura(request, orden_id):
             orden.estado_orden = 'Facturada'
 
             orden.save()
-
+            messages.success(request, 'factura creada correctamente')
             return redirect('lista_facturas')
 
     else:

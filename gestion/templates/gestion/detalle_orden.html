@@ -15,7 +15,7 @@
 </h3>
 
 <hr>
-
+{% if orden.estado_orden != 'Facturada' %}
 <form method="POST">
 
     {% csrf_token %}
@@ -29,6 +29,7 @@
     </button>
 
 </form>
+{% endif %}
 
 <hr>
 
@@ -64,16 +65,17 @@
             {{ detalle.subtotal }}
         </td>
         <td>
+            {% if orden.estado_orden != 'Facturada' %}
+            <a href="{% url 'editar_detalle' detalle.id %}">
+                Editar
+            </a>
 
-    <a href="{% url 'editar_detalle' detalle.id %}">
-        Editar
-    </a>
-
-    <a href="{% url 'eliminar_detalle' detalle.id %}">
-        Eliminar
-    </a>
-
-</td>
+            <a href="{% url 'eliminar_detalle' detalle.id %}"
+                onclick="return confirm('¿Desea eliminar este detalle?')">
+                Eliminar
+            </a>
+            {% endif %}
+        </td>
 
     </tr>
 

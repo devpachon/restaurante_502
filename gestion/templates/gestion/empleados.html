@@ -26,7 +26,8 @@
                 Editar
             </a>
 
-            <a href="{% url 'eliminar_empleado' empleado.id %}">
+            <a href="{% url 'eliminar_empleado' empleado.id %}"
+                onclick="return confirm('¿Desea eliminar este empleado?')">
                 Eliminar
             </a>
         </td>
